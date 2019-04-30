@@ -3,9 +3,9 @@
 #Author MeFisto94
 set -e # Quit on Error
 
-jdk_version="8u152"
-jdk_build_version="b16"
-jdk_hash=aa0333dd3019491ca4f6ddbe78cdb6d0
+jdk_version="8u202"
+jdk_build_version="b08"
+jdk_hash=1961070e4c9b4e26a04e7f5a083f551e/
 platforms=( "linux-x64.tar.gz" "linux-i586.tar.gz" "windows-i586.exe" "windows-x64.exe" "macosx-x64.dmg" )
 
 function install_xar {
@@ -92,7 +92,9 @@ function unpack_mac_jdk {
     else # Linux
         7z x ../downloads/jdk-macosx-x64.dmg > /dev/null
         # The following seems dependent of the 7zip version. Travis on Version 9.20 extracts all partitions, where as at least version 16.02 is automatically extracting 4.hfs
-        7z x 4.hfs > /dev/null
+        if [ -f 4.hfs ]; then
+            7z x 4.hfs > /dev/null
+        fi
         #install_xar
         #./xar-1.5.2/src/xar -xf JDK*/JDK*.pkg
         7z x JDK*/JDK*.pkg  > /dev/null
@@ -147,11 +149,9 @@ function unpack_windows {
     mkdir -p $1
     7z x -o$1 "downloads/jdk-$1.exe" > /dev/null
     
-    if [ $2 == "x64" ]; then
-        cabextract $1/.rsrc/1033/JAVA_CAB*/* -d $1
-        rm $1/src.zip
-        rm $1/jre.exe # This is the JRE installer, however the jre is already in jre/ ?? 
-    fi
+    cabextract $1/.rsrc/1033/JAVA_CAB*/* -d $1
+    rm $1/src.zip
+    rm $1/jre.exe # This is the JRE installer, however the jre is already in jre/ ?? 
     
     unzip -qq $1/tools.zip -d $1/
     rm $1/tools.zip

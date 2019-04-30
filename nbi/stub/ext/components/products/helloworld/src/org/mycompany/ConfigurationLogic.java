@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.mycompany.wizard.panels.HelloWorldPanel;
 import org.mycompany.installer.utils.applications.NetBeansRCPUtils;
 import org.netbeans.installer.product.components.ProductConfigurationLogic;
@@ -201,7 +199,6 @@ public class ConfigurationLogic extends ProductConfigurationLogic {
             // ADDED BY KIRILL: force correct permissions for JDK files
             LogManager.log("Setting JDK files as executable");
             setExecutableContents(target, "bin");
-            setExecutableContents(target, "db/bin");
             setExecutableContents(target, "jre/bin");
             setExecutableFile(target, "lib/jexec");
             setExecutableFile(target, "lib/amd64/libjawt.so");
